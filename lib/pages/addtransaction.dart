@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager/db/db_manager.dart';
 
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
@@ -25,6 +26,9 @@ class _AddTransactionState extends State<AddTransaction> {
     'Nov',
     'Dec',
   ];
+
+  int? amount;
+  String? description;
 
   Future<void> _selectedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -62,6 +66,11 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             style: TextStyle(fontFamily: 'yekan'),
             keyboardType: TextInputType.number,
+            onChanged: (val) {
+              try {
+                amount = int.parse(val);
+              } catch (e) {}
+            } ,
           ),
           SizedBox(height: 20),
           TextField(
@@ -72,6 +81,9 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             style: TextStyle(fontFamily: 'yekan'),
             maxLength: 70,
+            onChanged: (val) {
+              description = val;
+            },
           ),
           SizedBox(height: 20),
           Row(
@@ -146,9 +158,15 @@ class _AddTransactionState extends State<AddTransaction> {
           SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () async{
+                  if(amount != null && description!.isNotEmpty){
+                    DbManager dbmanager = DbManager();
+                    await dbmanager.addData(amount!, selectedDate, description!, type);
+                    Navigator.of(context).pop();
+                  }else{
+                    print('Wrong');
+                  }
+                },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff69247C),
                 foregroundColor: Colors.white,
