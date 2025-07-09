@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:money_manager/pages/home_page.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_manager/pages/splash_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         //  Locale('en')
       ],
 
-      home: const HomePage(),
+      home: const SplashScreen(),
     );
   }
 }
