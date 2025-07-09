@@ -9,6 +9,36 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction> {
   String type = 'income';
+  DateTime selectedDate = DateTime.now();
+
+  List<String> months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+
+  Future<void> _selectedDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010, 01),
+      lastDate: DateTime(2050, 12),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,10 +126,12 @@ class _AddTransactionState extends State<AddTransaction> {
               ),
               SizedBox(height: 20),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _selectedDate(context);
+                },
 
                 child: Text(
-                  'تاریخ تراکنش',
+                  '${selectedDate.day} ${months[selectedDate.month - 1]}',
                   style: TextStyle(
                     fontFamily: 'yekan',
                     color: Color(0xff69247C),
@@ -114,7 +146,9 @@ class _AddTransactionState extends State<AddTransaction> {
           SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Color(0xff69247C),
                 foregroundColor: Colors.white,
