@@ -13,16 +13,15 @@ showConfirmDialog(BuildContext context, String title, String content) async {
           },
           child: Text('بله'),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
+            backgroundColor: WidgetStateProperty.all(Colors.red),
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop(false);
-          },
-          child: Text('خیر'),
+        ElevatedButton(onPressed: (){
+          Navigator.of(context).pop(false);
+        },
+            child: Text('خیر'),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.green),
+            backgroundColor: WidgetStateProperty.all(Colors.green),
           ),
         ),
       ],

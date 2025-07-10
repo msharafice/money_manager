@@ -21,13 +21,17 @@ class _SplashScreenState extends State<SplashScreen> {
   Future checkUserName() async {
     String? name = await dbManager.getName();
     if (name != null) {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ),
+      );
     } else {
-      Navigator.of(
-        context,
-      ).pushReplacement(MaterialPageRoute(builder: (context) => GetName()));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => GetName(),
+        ),
+      );
     }
   }
 
@@ -40,7 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0),
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       body: Container(
         color: Colors.grey.shade200,
         child: Center(
@@ -56,7 +62,9 @@ class _SplashScreenState extends State<SplashScreen> {
                   color: Colors.blueAccent,
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(
+                height: 25,
+              ),
               Container(
                 width: 100,
                 height: 100,

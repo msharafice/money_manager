@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:money_manager/db/db_manager.dart';
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  const AddTransaction({Key? key}) : super(key: key);
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  String type = 'income';
+  String type = 'Income';
   DateTime selectedDate = DateTime.now();
 
   List<String> months = [
@@ -26,7 +27,6 @@ class _AddTransactionState extends State<AddTransaction> {
     'Nov',
     'Dec',
   ];
-
   int? amount;
   String? description;
 
@@ -34,7 +34,7 @@ class _AddTransactionState extends State<AddTransaction> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2010, 01),
+      firstDate: DateTime(2020, 01),
       lastDate: DateTime(2050, 12),
     );
     if (picked != null && picked != selectedDate) {
@@ -48,11 +48,9 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff69247C),
-        centerTitle: true,
         title: Text(
           'ثبت تراکنش جدید',
-          style: TextStyle(fontFamily: 'yekan', color: Colors.white),
+          style: TextStyle(fontFamily: 'yekan'),
         ),
       ),
       body: ListView(
@@ -62,7 +60,10 @@ class _AddTransactionState extends State<AddTransaction> {
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'مبلغ',
-              prefixIcon: Icon(Icons.money, color: Colors.green),
+              prefixIcon: Icon(
+                Icons.money,
+                color: Colors.green,
+              ),
             ),
             style: TextStyle(fontFamily: 'yekan'),
             keyboardType: TextInputType.number,
@@ -70,22 +71,28 @@ class _AddTransactionState extends State<AddTransaction> {
               try {
                 amount = int.parse(val);
               } catch (e) {}
-            } ,
+            },
           ),
-          SizedBox(height: 20),
+          SizedBox(
+            height: 20,
+          ),
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'شرح تراکنش',
-              prefixIcon: Icon(Icons.description),
+              prefixIcon: Icon(
+                Icons.description,
+              ),
             ),
             style: TextStyle(fontFamily: 'yekan'),
-            maxLength: 70,
+            maxLength: 32,
             onChanged: (val) {
               description = val;
             },
           ),
-          SizedBox(height: 20),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -96,69 +103,71 @@ class _AddTransactionState extends State<AddTransaction> {
                       'هزینه',
                       style: TextStyle(
                         fontFamily: 'yekan',
-                        color: type == 'expense' ? Colors.white : Colors.black,
+                        color: type == 'Expense' ? Colors.white : Colors.blue,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
-                    selected: type == 'expense' ? true : false,
-                    onSelected: (value) {
-                      if (value) {
+                    selected: type == 'Expense' ? true : false,
+                    onSelected: (val) {
+                      if (val) {
                         setState(() {
-                          type = 'expense';
+                          type = 'Expense';
                         });
                       }
                     },
-                    selectedColor: Color(0xFFDA498D),
-                    disabledColor: Color(0xFFF9E6CF),
+                    selectedColor: Colors.blue,
                   ),
-                  SizedBox(width: 20),
+                  SizedBox(
+                    width: 20,
+                  ),
                   ChoiceChip(
                     label: Text(
                       'درآمد',
                       style: TextStyle(
                         fontFamily: 'yekan',
-                        color: type == 'income' ? Colors.white : Colors.black,
+                        color: type == 'Income' ? Colors.white : Colors.blue,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: 18,
                       ),
                     ),
-                    selected: type == 'income' ? true : false,
-                    onSelected: (value) {
-                      if (value) {
+                    selected: type == 'Income' ? true : false,
+                    onSelected: (val) {
+                      if (val) {
                         setState(() {
-                          type = 'income';
+                          type = 'Income';
                         });
                       }
                     },
-                    selectedColor: Color(0xFFDA498D),
-                    disabledColor: Color(0xFFF9E6CF),
+                    selectedColor: Colors.blue,
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(
+                height: 20,
+              ),
               TextButton(
                 onPressed: () {
                   _selectedDate(context);
                 },
-
                 child: Text(
-                  '${selectedDate.day} ${months[selectedDate.month - 1]}',
+                  '${selectedDate.day} ${months[selectedDate.month - 1]} ',
                   style: TextStyle(
                     fontFamily: 'yekan',
-                    color: Color(0xff69247C),
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 24,
                   ),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20),
           SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () async{
+            height: 20,
+          ),
+          SizedBox(
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () async{
                   if(amount != null && description!.isNotEmpty){
                     DbManager dbmanager = DbManager();
                     await dbmanager.addData(amount!, selectedDate, description!, type);
@@ -167,23 +176,15 @@ class _AddTransactionState extends State<AddTransaction> {
                     print('Wrong');
                   }
                 },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff69247C),
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                child: Text(
+                  'افزودن',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontFamily: 'yekan',
+                  ),
                 ),
-              ),
-              child: Text(
-                'افزودن تراکنش',
-                style: TextStyle(
-                  fontFamily: 'yekan',
-                  color: Color(0xFFF9E6CF),
-                  fontSize: 24,
-                ),
-              ),
-            ),
-          ),
+              )),
         ],
       ),
     );

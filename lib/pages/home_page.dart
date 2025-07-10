@@ -2,9 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:money_manager/db/db_manager.dart';
-// import 'package:money_manager/models/transactions_model.dart';
 import 'package:money_manager/pages/addtransaction.dart';
-// import 'package:money_manager/pages/alerts_screen/dialog_box.dart';
+import 'package:money_manager/pages/alerts_screen/dialog_box.dart';
 import 'package:money_manager/pages/get_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,6 +25,31 @@ class _HomePageState extends State<HomePage> {
   int expense = 0;
   List<FlSpot> dataSet = [];
   DateTime today = DateTime.now();
+
+  List<FlSpot> getBalancePoint(List<TransactionModel> entireDate) {
+    List<TransactionModel> tempData = [];
+    List<FlSpot> points = [];
+    int Balance = 0;
+
+    for (TransactionModel data in entireDate) {
+      if (data.date.month == today.month) {
+        tempData.add(data);
+      }
+    }
+
+    tempData.sort((a, b) => a.date.day.compareTo(b.date.day));
+
+    for (var data in tempData) {
+      if (data.type == 'Income') {
+        Balance += data.amount;
+      } else {
+        Balance -= data.amount;
+      }
+      points.add(FlSpot(data.date.day.toDouble(), Balance.toDouble()));
+    }
+
+    return points;
+  }
 
   List<FlSpot> getExpensePoint(List<TransactionModel> entireDate) {
     dataSet = [];
@@ -197,13 +221,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 25),
+                    SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Container(
                         padding: EdgeInsets.all(8),
                         width: double.infinity,
-                        height: 160,
+                        height: 180,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           gradient: LinearGradient(
@@ -245,6 +269,38 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: 25),
+                    Text(
+                      'نمودار موجودی',
+                      style: TextStyle(
+                        fontFamily: 'yekan',
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 25),
+                    Container(
+                      width: double.infinity,
+                      height: 400,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: LineChart(
+                        LineChartData(
+                          borderData: FlBorderData(show: false),
+                          lineBarsData: [
+                            LineChartBarData(
+                              spots: getBalancePoint(snapshot.data!),
+                              isCurved: false,
+                              barWidth: 3,
+                              color: Colors.deepPurple,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 25),
+
                     Text(
                       'نمودار برداشت ها',
                       style: TextStyle(
@@ -440,7 +496,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Container(
           width: double.infinity,
-          height: 70,
+          height: 90,
           decoration: BoxDecoration(
             color: Colors.green.shade400,
             borderRadius: BorderRadius.circular(15),
@@ -516,7 +572,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Container(
           width: double.infinity,
-          height: 70,
+          height: 90,
           decoration: BoxDecoration(
             color: Colors.red.shade400,
             borderRadius: BorderRadius.circular(15),

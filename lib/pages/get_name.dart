@@ -16,13 +16,17 @@ class _GetNameState extends State<GetName> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(toolbarHeight: 0),
+      appBar: AppBar(
+        toolbarHeight: 0,
+      ),
       body: Container(
         color: Colors.grey.shade200,
         child: Center(
           child: Column(
             children: [
-              SizedBox(height: 25),
+              SizedBox(
+                height: 25,
+              ),
               Text(
                 'به برنامه مدیریت مالی خوش آمدید',
                 style: TextStyle(
@@ -32,7 +36,9 @@ class _GetNameState extends State<GetName> {
                   color: Colors.blueAccent,
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(
+                height: 25,
+              ),
               Container(
                 width: 100,
                 height: 100,
@@ -42,7 +48,9 @@ class _GetNameState extends State<GetName> {
                 ),
                 child: Image.asset('assets/images/money.png'),
               ),
-              SizedBox(height: 25),
+              SizedBox(
+                height: 25,
+              ),
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -57,12 +65,16 @@ class _GetNameState extends State<GetName> {
                     onChanged: (val) {
                       name = val;
                     },
-                    decoration: InputDecoration(border: InputBorder.none),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                    ),
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
               ),
-              SizedBox(height: 25),
+              SizedBox(
+                height: 25,
+              ),
               SizedBox(
                 height: 50,
                 child: ElevatedButton(
@@ -70,31 +82,29 @@ class _GetNameState extends State<GetName> {
                     if (name.isNotEmpty) {
                       dbManager.addName(name);
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
                       );
-                    } else {
+                    }else{
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          action: SnackBarAction(
-                            label: 'Ok',
-                            onPressed: () {
-                              ScaffoldMessenger.of(
-                                context,
-                              ).hideCurrentSnackBar();
-                            },
-                            textColor: Colors.white,
-                          ),
-                          backgroundColor: Colors.red.shade700,
-                          content: Text(
-                            'لطفا نام خود را وارد نمایید',
+                            action: SnackBarAction(
+                              label: 'Ok',
+                              onPressed: (){
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              },
+                              textColor: Colors.white,
+                            ) ,
+                            backgroundColor: Colors.red.shade700,
+                            content: Text('لطفا نام خود را وارد نمایید',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               fontFamily: 'yekan',
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                              color: Colors.white
+                            ),)
+                        )
                       );
                     }
                   },
@@ -109,7 +119,7 @@ class _GetNameState extends State<GetName> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ),
